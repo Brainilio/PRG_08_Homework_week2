@@ -14,9 +14,9 @@ class Game {
             this.addCarWithRock(i)
         }
 
-        // for(let i = 0; i < this.gameObjects.length; i+2) { 
-        //     console.log(this.gameObjects[i]);
-        // }
+        for(let i = 0; i < this.gameObjects.length; i++) { 
+            console.log(this.gameObjects[i]);
+        }
 
         this.gameLoop()
 
@@ -45,13 +45,13 @@ class Game {
 
         //     })
         // }
-        for(let car of this.cars) {
-            for(let rock of this.rocks) {
-                if(this.hasCollision(car, rock)) {
-                    rock.crashed(car.Speed)
-                    car.crash()
+        for(let object of this.gameObjects) {
+        
+                if(this.gameObjects.hasCollision(this)) {
+                    object.crashed(object.Speed)
+                    object.crash()
                     this.gameOver()
-                }
+                
             }
         }
     }
@@ -73,12 +73,7 @@ class Game {
         document.getElementById("score").innerHTML = "Score : "+this.score
     }
 
-    private hasCollision(rect1 : Car, rect2 : Rock) : boolean {
-        return (rect1.Y < rect2.X + rect2.width &&
-                rect1.X + rect1.width > rect2.X &&
-                rect1.Y < rect2.Y + rect2.height &&
-                rect1.Y + rect1.height > rect2.Y)
-    }
+  
 } 
 
 // load

@@ -1,15 +1,20 @@
 abstract class GameObject extends HTMLElement { 
-    protected y: number
-    protected x: number 
+
+    // Fields
+    protected _y: number = 0; 
+    protected _x: number = 0; 
+    protected _speed : number = Math.random() * 2 + 1;
+
     public Width: number
     public Height: number
     
+    public get Speed()  :number { return this._speed}; 
+    public set Speed(s  : number)   { this.Speed = s }     
+	public get X()      : number    { return this.X    }
+	public set X(value  : number)   { this.X = value   }
 
-	public get X()      : number    { return this.x    }
-	public set X(value  : number)   { this.x = value   }
-
-	public get Y()      : number    { return this.y    }
-	public set Y(value  : number)   { this.y = value   }
+	public get Y()      : number    { return this.Y   }
+	public set Y(value  : number)   { this.Y = value   }
 
 
     public get width()  : number    { return this.clientWidth }
@@ -17,12 +22,17 @@ abstract class GameObject extends HTMLElement {
 
     constructor() { 
         super() 
+
+        
         let parent: HTMLElement = document.getElementById("container")
         parent.appendChild(this)
     }
 
-    public checkCollision(this):Boolean { 
-        return false; 
+    public hasCollision(gameObject: GameObject) : boolean {
+        return (this.Y < this.X + this.width &&
+                this.X + this.width > this.X &&
+                this.Y < this.Y + this.height &&
+                this.Y + this.height > this.Y)
     }
 
     public move():void { 
@@ -30,7 +40,7 @@ abstract class GameObject extends HTMLElement {
     }
     
     protected draw():void { 
-        this.style.transform =`translate(${this.x}px,${this.x}px)`
+        this.style.transform =`translate(${this.X}px,${this.Y}px)`
     }
 
 

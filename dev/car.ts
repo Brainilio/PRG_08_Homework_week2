@@ -16,8 +16,8 @@ class Car extends GameObject {
         super()
 
         this.game   = game
-        this.x     = 0
-        this.y      = (70 * yIndex) + 80
+        this._x     = 0
+        this._y     = (70 * yIndex) + 80
         
         new Wheel(this, 105)  // front wheel 
         new Wheel(this, 20)   // rear wheel 
@@ -41,7 +41,7 @@ class Car extends GameObject {
 
    public move():void {
         // de snelheid bij de x waarde optellen
-        this.x += this.speed
+        this.X += this.speed
 
         // hier de snelheid verlagen als we aan het afremmen zijn
         if (this.braking)       this.speed *= 0.98
@@ -49,7 +49,7 @@ class Car extends GameObject {
         
         if(this.speed == 0 && this.braking && !this.stopped) {
             this.changeColor(80) //green
-            this.game.addScore(this.x)
+            this.game.addScore(this.X)
             this.braking = false
             this.stopped = true
         }

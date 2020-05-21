@@ -1,23 +1,32 @@
 class GameObject extends HTMLElement {
     constructor() {
         super();
+        this._y = 0;
+        this._x = 0;
+        this._speed = Math.random() * 2 + 1;
         let parent = document.getElementById("container");
         parent.appendChild(this);
     }
-    get X() { return this.x; }
-    set X(value) { this.x = value; }
-    get Y() { return this.y; }
-    set Y(value) { this.y = value; }
+    get Speed() { return this._speed; }
+    ;
+    set Speed(s) { this.Speed = s; }
+    get X() { return this.X; }
+    set X(value) { this.X = value; }
+    get Y() { return this.Y; }
+    set Y(value) { this.Y = value; }
     get width() { return this.clientWidth; }
     get height() { return this.clientHeight; }
-    checkCollision() {
-        return false;
+    hasCollision(gameObject) {
+        return (this.Y < this.X + this.width &&
+            this.X + this.width > this.X &&
+            this.Y < this.Y + this.height &&
+            this.Y + this.height > this.Y);
     }
     move() {
         console.log("I am moving.");
     }
     draw() {
-        this.style.transform = `translate(${this.x}px,${this.x}px)`;
+        this.style.transform = `translate(${this.X}px,${this.Y}px)`;
     }
     onCollision() {
     }
@@ -42,8 +51,8 @@ class Car extends GameObject {
         this.braking = false;
         this.stopped = false;
         this.game = game;
-        this.x = 0;
-        this.y = (70 * yIndex) + 80;
+        this._x = 0;
+        this._y = (70 * yIndex) + 80;
         new Wheel(this, 105);
         new Wheel(this, 20);
         document.addEventListener("keydown", (e) => this.handleKeyDown(e));
@@ -60,14 +69,14 @@ class Car extends GameObject {
         }
     }
     move() {
-        this.x += this.speed;
+        this.X += this.speed;
         if (this.braking)
             this.speed *= 0.98;
         if (this.speed < 0.5)
             this.speed = 0;
         if (this.speed == 0 && this.braking && !this.stopped) {
             this.changeColor(80);
-            this.game.addScore(this.x);
+            this.game.addScore(this.X);
             this.braking = false;
             this.stopped = true;
         }
@@ -93,6 +102,9 @@ class Game {
         this.gameover = false;
         for (let i = 0; i < 6; i++) {
             this.addCarWithRock(i);
+        }
+        for (let i = 0; i < this.gameObjects.length; i++) {
+            console.log(this.gameObjects[i]);
         }
         this.gameLoop();
     }
@@ -132,12 +144,6 @@ class Game {
     draw() {
         document.getElementById("score").innerHTML = "Score : " + this.score;
     }
-    hasCollision(rect1, rect2) {
-        return (rect1.Y < rect2.X + rect2.width &&
-            rect1.X + rect1.width > rect2.X &&
-            rect1.Y < rect2.Y + rect2.height &&
-            rect1.Y + rect1.height > rect2.Y);
-    }
 }
 window.addEventListener("load", () => new Game());
 class Rock extends GameObject {
@@ -147,16 +153,15 @@ class Rock extends GameObject {
         this.g = 0;
         this.rotation = 0;
         this.rotationSpeed = 0;
-        this.x = Math.random() * 400 + 400;
-        this.x = (70 * index) + 80;
+        this.X = Math.random() * 400 + 400;
+        this.X = (70 * index) + 80;
     }
-    set Speed(s) { this.speed = s; }
     move() {
-        this.x += this.speed;
-        this.x += this.g;
+        this.X += this.speed;
+        this.X += this.g;
         this.speed *= 0.98;
         this.rotation += this.rotationSpeed;
-        if (this.x + this.clientHeight > document.getElementById("container").clientHeight) {
+        if (this.X + this.clientHeight > document.getElementById("container").clientHeight) {
             this.speed = 0;
             this.g = 0;
             this.rotationSpeed = 0;

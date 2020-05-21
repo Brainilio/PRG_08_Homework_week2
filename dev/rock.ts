@@ -11,25 +11,23 @@ class Rock extends GameObject{
     private rotation        : number = 0
     private rotationSpeed   : number = 0
 
-    // Properties
-    public set Speed(s  : number)   { this.speed = s }     
 
     constructor(index) {
         super()
-        this.x = Math.random() * 400 + 400
-        this.x = (70 * index) + 80
+        this.X = Math.random() * 400 + 400
+        this.X = (70 * index) + 80
 
     }
 
     public move():void {
         // speed optellen zo lang we niet de bodem raken
         // speed wordt hoger dan 0 zodra de auto de rots raakt
-        this.x += this.speed
-        this.x += this.g
+        this.X += this.speed
+        this.X += this.g
         this.speed *= 0.98
         this.rotation += this.rotationSpeed
 
-        if (this.x + this.clientHeight > document.getElementById("container").clientHeight){
+        if (this.X + this.clientHeight > document.getElementById("container").clientHeight){
             this.speed = 0
             this.g = 0
             this.rotationSpeed = 0
